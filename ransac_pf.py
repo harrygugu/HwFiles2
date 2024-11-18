@@ -67,19 +67,24 @@ def save_visualization(file_name):
     vis.add_geometry(inlier_cloud)
     vis.add_geometry(outlier_cloud)
     
+    vis.poll_events()
+    vis.update_renderer()
+
     # Adjust view parameters
     ctr = vis.get_view_control()
     ctr.set_zoom(1)
     ctr.set_front([0.4257, -0.2125, -0.8795])
     ctr.set_lookat([2.6172, 2.0475, 1.532])
     ctr.set_up([-0.0694, -0.9768, 0.2024])
-    
-    vis.poll_events()
-    vis.update_renderer()
+
+    # Allow the visualizer to fully render with the updated camera settings
+    for _ in range(10):
+        vis.poll_events()
+        vis.update_renderer()
     
     # Capture and save screenshot
     vis.capture_screen_image(file_name)
     vis.destroy_window()
 
-# Save the visualization as a JPG
-save_visualization("result/pcd_visualization.jpg")
+# Save the visualization as a PNG
+save_visualization("result/pcd_visualization.png")
